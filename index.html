@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="referrer" content="no-referrer">
+  <title>BAR Lobby Reporting Mockup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" id="brandButton" type="button">BAR</button>
+      <nav class="primary-tabs" aria-label="Primary">
+        <button class="tab is-active" data-screen="playLobby">Play</button>
+        <button class="tab" data-screen="watch">Watch</button>
+        <button class="tab" data-screen="news">News</button>
+        <button class="tab" data-screen="library">Library</button>
+        <button class="tab" data-screen="friends">Friends</button>
+      </nav>
+      <div class="window-actions" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </header>
+
+    <main class="screen-stage">
+      <section class="screen screen-main is-visible" data-screen="main">
+        <img class="bg-shot" src="assets/main1.png" alt="BAR main menu background">
+      </section>
+
+      <section class="screen screen-play" data-screen="playLobby">
+        <div class="play-layout">
+          <section class="panel roster-panel">
+            <div class="panel-header">
+              <span>Lobby Participants</span>
+              <span class="panel-chip">Right-click player, spectator, or chat name to report</span>
+            </div>
+            <div class="roster-groups" id="playRoster"></div>
+          </section>
+
+          <section class="panel lobby-side">
+            <div class="map-card">
+              <div class="map-preview"></div>
+              <div class="map-meta">
+                <strong>Supreme Isthmus v2.1</strong>
+                <span>8v8 Large Team Lobby</span>
+              </div>
+              <button class="primary-action">Configure Game Options</button>
+            </div>
+
+            <div class="chat-panel">
+              <div class="panel-header">
+                <span>Lobby Chat</span>
+                <span class="panel-chip">Sample moderation flow</span>
+              </div>
+              <div class="chat-log" id="lobbyChat"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen screen-watch" data-screen="watch">
+        <img class="bg-shot" src="assets/replaymenu.png" alt="BAR replay menu background">
+        <div class="watch-layout">
+          <section class="panel replay-panel">
+            <div class="panel-header">
+              <span>Replay Browser</span>
+              <span class="panel-chip">Select a replay, then report from the replay participant list</span>
+            </div>
+            <div class="replay-table" id="replayTable"></div>
+          </section>
+
+          <section class="panel replay-details">
+            <div class="panel-header">
+              <span>Replay Details</span>
+              <span class="panel-chip">Right-click names to report</span>
+            </div>
+            <div class="roster-groups compact" id="watchRoster"></div>
+            <button class="watch-button">Watch Replay</button>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen screen-news" data-screen="news">
+        <img class="bg-shot" src="assets/main1.png" alt="BAR news placeholder background">
+        <div class="placeholder-panel">
+          <h2>News</h2>
+          <p>This presentation mockup focuses on reporting flows. Use Play, Watch, or Friends to demonstrate them.</p>
+        </div>
+      </section>
+
+      <section class="screen screen-library" data-screen="library">
+        <img class="bg-shot" src="assets/main1.png" alt="BAR library placeholder background">
+        <div class="placeholder-panel">
+          <h2>Library</h2>
+          <p>This presentation mockup focuses on reporting flows. Use Play, Watch, or Friends to demonstrate them.</p>
+        </div>
+      </section>
+
+      <section class="screen screen-friends" data-screen="friends">
+        <img class="bg-shot" src="assets/main1.png" alt="BAR friends background">
+        <div class="friends-layout">
+          <section class="panel friends-panel">
+            <div class="panel-header">
+              <span>Friends</span>
+              <span class="panel-chip">Right-click any friend to report</span>
+            </div>
+            <div class="friends-list" id="friendsList"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="context-menu" id="contextMenu" hidden></div>
+
+    <div class="modal-backdrop" id="reportModal" hidden>
+      <section class="modal-window">
+        <div class="modal-header">
+          <div>
+            <h2 id="modalTitle">Report User</h2>
+            <p id="modalSubtitle">Select a report type and the relevant game.</p>
+          </div>
+          <button class="close-button" id="closeModal" aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-body">
+          <aside class="report-sidebar">
+            <div class="sidebar-block">
+              <span class="sidebar-label">Selected user(s)</span>
+              <div class="selected-users" id="selectedUsers"></div>
+            </div>
+            <div class="sidebar-block sidebar-note">
+              Games marked with <span class="presence-dot">!</span> indicate YOU was also present in that match.
+            </div>
+          </aside>
+
+          <div class="report-content">
+            <section class="report-step is-active" data-step="details">
+              <div class="field-grid">
+                <label class="field">
+                  <span>Report Type</span>
+                  <div class="pill-group" id="reportTypeGroup">
+                    <button class="pill is-selected" data-report-type="chat">Chat Violation</button>
+                    <button class="pill" data-report-type="action">Action Violation</button>
+                  </div>
+                </label>
+
+                <label class="field">
+                  <span>Evidence Upload</span>
+                  <input id="evidenceInput" type="file" multiple accept=".png,.jpg,.jpeg">
+                  <small>Upload up to 3 files. Only `.png` and `.jpg` files are accepted.</small>
+                  <div class="file-summary" id="fileSummary">No files selected.</div>
+                </label>
+              </div>
+
+              <label class="field">
+                <span>Recent Games Played In The Last Two Months</span>
+                <div class="games-table" id="gamesTable"></div>
+              </label>
+
+              <label class="field">
+                <span>Reason For Report</span>
+                <textarea id="reasonInput" rows="5" placeholder="Describe what happened..."></textarea>
+                <small>Please quote verbatim if possible and provide a game timestamp where the violation occurred.</small>
+              </label>
+            </section>
+
+            <section class="report-step" data-step="chat">
+              <div class="chat-step-header">
+                <div>
+                  <h3>Chat Report Evidence</h3>
+                  <p>Select one or more lines from the previously chosen player.</p>
+                </div>
+                <div class="chat-filter">Selected game: <strong id="selectedGameLabel"></strong></div>
+              </div>
+              <div class="chat-selection" id="chatSelection"></div>
+            </section>
+
+            <section class="report-step" data-step="confirm">
+              <div class="chat-step-header">
+                <div>
+                  <h3>Confirm Reported Users</h3>
+                  <p>If multiple players were selected from chat, confirm which users should be included in the report.</p>
+                </div>
+              </div>
+              <div class="confirm-users" id="confirmUsers"></div>
+            </section>
+
+            <section class="report-step" data-step="success">
+              <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h3>Report Submitted</h3>
+                <p id="successMessage"></p>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="footer-button" id="backButton">Back</button>
+          <button class="footer-button" id="cancelButton">Cancel</button>
+          <button class="footer-button primary" id="nextButton">Continue</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
