@@ -132,9 +132,6 @@
               <span class="sidebar-label">Selected user(s)</span>
               <div class="selected-users" id="selectedUsers"></div>
             </div>
-            <div class="sidebar-block sidebar-note">
-              Games marked with <span class="presence-dot">!</span> indicate YOU was also present in that match.
-            </div>
           </aside>
 
           <div class="report-content">
@@ -150,15 +147,20 @@
 
                 <label class="field">
                   <span>Evidence Upload</span>
-                  <input id="evidenceInput" type="file" multiple accept=".png,.jpg,.jpeg">
+                  <label class="upload-control" for="evidenceInput">
+                    <span class="upload-button">Browse Files</span>
+                    <span class="upload-text" id="uploadText">No files selected.</span>
+                  </label>
+                  <input id="evidenceInput" class="sr-only-file" type="file" multiple accept=".png,.jpg,.jpeg">
                   <small>Upload up to 3 files. Only `.png` and `.jpg` files are accepted.</small>
                   <div class="file-summary" id="fileSummary">No files selected.</div>
                 </label>
               </div>
 
               <label class="field">
-                <span>Recent Games Played In The Last Two Months</span>
+                <span>Recent Games Played, last 30 days</span>
                 <div class="games-table" id="gamesTable"></div>
+                <div class="games-note">Games marked with <span class="presence-flag">!</span> indicate YOU was also present in that match.</div>
               </label>
 
               <label class="field">

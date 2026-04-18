@@ -123,6 +123,7 @@ const backButton = document.getElementById("backButton");
 const cancelButton = document.getElementById("cancelButton");
 const fileInput = document.getElementById("evidenceInput");
 const fileSummary = document.getElementById("fileSummary");
+const uploadText = document.getElementById("uploadText");
 const reasonInput = document.getElementById("reasonInput");
 const selectedGameLabel = document.getElementById("selectedGameLabel");
 const successMessage = document.getElementById("successMessage");
@@ -264,10 +265,22 @@ function renderConfirmUsers() {
       <span>${name}</span>
     </label>
   `).join("");
+
+  renderSelectedUsers();
 }
 
 function renderSelectedUsers() {
-  selectedUsersNode.innerHTML = state.reportTargets.map((name) => `<span class="user-pill">${name}</span>`).join("");
+  const selectedLines = state.selectedChatLines.map((index) => (gameChats[state.selectedGameId] || gameChats.default)[index]).filter(Boolean);
+  const chatTargets = [...new Set(selectedLines.map((line) => line.author))];
+  const useConfirmedSelection =
+    state.reportType === "chat" &&
+    (state.reportStep === "confirm" || state.reportStep === "chat") &&
+    state.confirmedTargets.length > 0;
+  const sidebarUsers = useConfirmedSelection
+    ? state.confirmedTargets
+    : (state.reportStep === "confirm" && chatTargets.length ? chatTargets : state.reportTargets);
+
+  selectedUsersNode.innerHTML = sidebarUsers.map((name) => `<span class="user-pill">${name}</span>`).join("");
 }
 
 function setScreen(screenId) {
@@ -453,6 +466,7 @@ confirmUsers.addEventListener("change", (event) => {
   } else {
     state.confirmedTargets = state.confirmedTargets.filter((name) => name !== user);
   }
+  renderSelectedUsers();
   updateModalStep();
 });
 
@@ -462,10 +476,13 @@ fileInput.addEventListener("change", () => {
   const files = [...fileInput.files];
   const filtered = files.slice(0, 3);
   if (files.length > 3) {
+    uploadText.textContent = `${filtered.length} files selected`;
     fileSummary.textContent = `Only the first 3 files will be used: ${filtered.map((file) => file.name).join(", ")}`;
   } else if (filtered.length) {
+    uploadText.textContent = filtered.map((file) => file.name).join(", ");
     fileSummary.textContent = `Selected: ${filtered.map((file) => file.name).join(", ")}`;
   } else {
+    uploadText.textContent = "No files selected.";
     fileSummary.textContent = "No files selected.";
   }
 });
@@ -487,6 +504,7 @@ nextButton.addEventListener("click", () => {
     modalTitle.textContent = "Confirm Report";
     modalSubtitle.textContent = "Confirm every player that should be included before submitting.";
     renderConfirmUsers();
+    renderSelectedUsers();
   } else if (state.reportStep === "confirm") {
     submitReport();
   }
@@ -503,6 +521,7 @@ backButton.addEventListener("click", () => {
     modalTitle.textContent = "Chat Report";
     modalSubtitle.textContent = "Select one or more chat lines from the chosen game.";
   }
+  renderSelectedUsers();
   updateModalStep();
 });
 
