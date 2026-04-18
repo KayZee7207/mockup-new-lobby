@@ -268,8 +268,8 @@ button {
   min-height: 220px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
-    url("assets/play1.png") center 22% / cover no-repeat;
+    rgba(16, 19, 27, 0.98)
+    url("assets/supreme.png") center / contain no-repeat;
 }
 
 .map-meta {

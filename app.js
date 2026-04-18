@@ -308,7 +308,7 @@ function openReportModal(users, source) {
   state.selectedChatLines = [];
   reportModal.hidden = false;
   modalTitle.textContent = "Report User";
-  modalSubtitle.textContent = "Select whether this is a chat or action violation and choose the relevant game.";
+  modalSubtitle.textContent = "False or intentionally erroneous reports can result in loss of your ability to submit reports.";
   document.querySelectorAll("[data-report-type]").forEach((pill) => {
     pill.classList.toggle("is-selected", pill.dataset.reportType === "chat");
   });
@@ -497,7 +497,7 @@ backButton.addEventListener("click", () => {
   if (state.reportStep === "chat") {
     state.reportStep = "details";
     modalTitle.textContent = "Report User";
-    modalSubtitle.textContent = "Select whether this is a chat or action violation and choose the relevant game.";
+    modalSubtitle.textContent = "False or intentionally erroneous reports can result in loss of your ability to submit reports.";
   } else if (state.reportStep === "confirm") {
     state.reportStep = "chat";
     modalTitle.textContent = "Chat Report";

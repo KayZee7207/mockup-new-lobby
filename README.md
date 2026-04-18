@@ -12,10 +12,8 @@ This mockup demonstrates how a player or spectator can report a user from:
 
 ## How To Open
 
-1. Double-click `start_mockup.bat`
-2. Your default browser will open `index.html`
-
-You can also open `index.html` directly in a browser.
+1. Double-click `index.html`
+2. Your default browser will open the mockup
 
 ## How To Use
 
@@ -45,7 +43,6 @@ You can also open `index.html` directly in a browser.
 - `styles.css`: BAR-style visual presentation
 - `app.js`: mock data and interaction logic
 - `assets/`: reference images used for the presentation
-- `start_mockup.bat`: launcher for quick opening
 
 ## Credit
 
