@@ -196,6 +196,24 @@
                 <div class="success-icon">✓</div>
                 <h3>Report Submitted</h3>
                 <p id="successMessage"></p>
+                <div class="post-report-panel">
+                  <p>In addition to reporting this user you can Ignore them. You can also Avoid (don't want to play with) them or Block (don't even want to see) them.</p>
+                  <div class="post-report-actions">
+                    <button class="relation-button relation-ignore" type="button" data-relation-action="Ignore">
+                      <span class="relation-icon">✖</span>
+                      <span>Ignore</span>
+                    </button>
+                    <button class="relation-button relation-avoid" type="button" data-relation-action="Avoid">
+                      <span class="relation-icon">✖</span>
+                      <span>Avoid</span>
+                    </button>
+                    <button class="relation-button relation-block" type="button" data-relation-action="Block">
+                      <span class="relation-icon">◔</span>
+                      <span>Block</span>
+                    </button>
+                  </div>
+                  <p class="post-report-note">You can change who you ignore, avoid and block in your relationships page or for this person specifically on their profile page.</p>
+                </div>
               </div>
             </section>
           </div>
@@ -205,6 +223,27 @@
           <button class="footer-button" id="backButton">Back</button>
           <button class="footer-button" id="cancelButton">Cancel</button>
           <button class="footer-button primary" id="nextButton">Continue</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="relationModal" hidden>
+      <section class="modal-window relation-window">
+        <div class="modal-header">
+          <div>
+            <h2 id="relationTitle">Assign Relation</h2>
+            <p id="relationSubtitle">Choose which reported player should receive this relation.</p>
+          </div>
+          <button class="close-button" id="closeRelationModal" aria-label="Close">x</button>
+        </div>
+
+        <div class="report-content">
+          <div class="relation-list" id="relationList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="footer-button" id="cancelRelationButton">Cancel</button>
+          <button class="footer-button primary" id="confirmRelationButton">Confirm</button>
         </div>
       </section>
     </div>

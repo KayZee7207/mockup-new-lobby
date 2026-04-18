@@ -795,6 +795,7 @@ button.chat-author {
   place-items: center;
   text-align: center;
   padding: 26px;
+  gap: 18px;
 }
 
 .success-icon {
@@ -808,6 +809,106 @@ button.chat-author {
   color: var(--success);
   font-size: 2.2rem;
   font-weight: 700;
+}
+
+.post-report-panel {
+  width: min(100%, 860px);
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  text-align: left;
+  background: linear-gradient(180deg, rgba(23, 28, 38, 0.96), rgba(12, 15, 22, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.post-report-panel p {
+  margin: 0;
+  color: #eef3fb;
+  line-height: 1.5;
+}
+
+.post-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.relation-button {
+  min-width: 120px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 18px;
+  text-transform: uppercase;
+  color: #f3f7ff;
+  background: linear-gradient(180deg, rgba(34, 40, 53, 0.96), rgba(18, 21, 30, 0.98));
+}
+
+.relation-ignore {
+  border: 2px solid #d39a2f;
+  box-shadow: inset 0 0 0 1px rgba(255, 204, 104, 0.12);
+}
+
+.relation-avoid,
+.relation-block {
+  border: 2px solid #d33a3a;
+  box-shadow: inset 0 0 0 1px rgba(255, 118, 118, 0.12);
+}
+
+.relation-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 0.78rem;
+}
+
+.post-report-note {
+  color: var(--muted) !important;
+}
+
+.relation-window {
+  width: min(760px, 100%);
+}
+
+.relation-list {
+  display: grid;
+  gap: 10px;
+}
+
+.relation-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.relation-row.is-selected {
+  border-color: rgba(89, 168, 255, 0.5);
+  background: rgba(89, 168, 255, 0.14);
+}
+
+.relation-tag {
+  padding: 4px 10px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.relation-tag.ignore {
+  color: #f4d17b;
+  border: 1px solid #d39a2f;
+}
+
+.relation-tag.avoid,
+.relation-tag.block {
+  color: #ffb2b2;
+  border: 1px solid #d33a3a;
 }
 
 [hidden] {

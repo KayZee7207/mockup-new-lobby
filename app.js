@@ -130,6 +130,13 @@ const successMessage = document.getElementById("successMessage");
 const modalTitle = document.getElementById("modalTitle");
 const modalSubtitle = document.getElementById("modalSubtitle");
 const brandButton = document.getElementById("brandButton");
+const relationModal = document.getElementById("relationModal");
+const relationTitle = document.getElementById("relationTitle");
+const relationSubtitle = document.getElementById("relationSubtitle");
+const relationList = document.getElementById("relationList");
+const closeRelationModalButton = document.getElementById("closeRelationModal");
+const cancelRelationButton = document.getElementById("cancelRelationButton");
+const confirmRelationButton = document.getElementById("confirmRelationButton");
 
 function countryFlag(code) {
   const palettes = {
@@ -369,6 +376,33 @@ function submitReport() {
   updateModalStep();
 }
 
+function getRelationUsers() {
+  if (state.reportType === "chat" && state.confirmedTargets.length) {
+    return state.confirmedTargets;
+  }
+  return state.reportTargets;
+}
+
+function openRelationModal(action) {
+  const users = getRelationUsers();
+  const actionClass = action.toLowerCase();
+  relationTitle.textContent = `${action} Player`;
+  relationSubtitle.textContent = `Choose which reported player should receive ${action.toLowerCase()}.`;
+  relationList.innerHTML = users.map((name, index) => `
+    <button class="relation-row ${index === 0 ? "is-selected" : ""}" type="button" data-relation-user="${name}">
+      <input type="radio" name="relationUser" ${index === 0 ? "checked" : ""}>
+      <span>${name}</span>
+      <span class="relation-tag ${actionClass}">${action}</span>
+    </button>
+  `).join("");
+  relationModal.dataset.selectedUser = users[0] || "";
+  relationModal.hidden = false;
+}
+
+function closeRelationModal() {
+  relationModal.hidden = true;
+}
+
 renderRoster(document.getElementById("playRoster"), { contextSource: "play" });
 renderRoster(document.getElementById("watchRoster"), { includeOs: false, contextSource: "watch" });
 renderFriends();
@@ -393,6 +427,11 @@ document.querySelectorAll("[data-jump]").forEach((button) => {
 document.addEventListener("click", (event) => {
   if (!contextMenu.contains(event.target)) {
     hideContextMenu();
+  }
+
+  const relationActionButton = event.target.closest("[data-relation-action]");
+  if (relationActionButton) {
+    openRelationModal(relationActionButton.dataset.relationAction);
   }
 });
 
@@ -531,6 +570,33 @@ closeModalButton.addEventListener("click", closeReportModal);
 reportModal.addEventListener("click", (event) => {
   if (event.target === reportModal) {
     closeReportModal();
+  }
+});
+
+relationList.addEventListener("click", (event) => {
+  const row = event.target.closest("[data-relation-user]");
+  if (!row) {
+    return;
+  }
+
+  relationModal.dataset.selectedUser = row.dataset.relationUser;
+  relationList.querySelectorAll(".relation-row").forEach((node) => {
+    const isSelected = node.dataset.relationUser === relationModal.dataset.selectedUser;
+    node.classList.toggle("is-selected", isSelected);
+    const radio = node.querySelector('input[type="radio"]');
+    if (radio) {
+      radio.checked = isSelected;
+    }
+  });
+});
+
+confirmRelationButton.addEventListener("click", closeRelationModal);
+cancelRelationButton.addEventListener("click", closeRelationModal);
+closeRelationModalButton.addEventListener("click", closeRelationModal);
+
+relationModal.addEventListener("click", (event) => {
+  if (event.target === relationModal) {
+    closeRelationModal();
   }
 });
 
